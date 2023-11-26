@@ -1,5 +1,7 @@
 # Flutter music player application
 
+# Application is under development
+
 ## Installation
 
 1. Clone the repository:
