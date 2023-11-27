@@ -8,8 +8,7 @@ class AppTheme {
     final Color primaryColor,
     final Color lightPrimaryColor,
   ) {
-    lightTheme = ThemeData(
-      useMaterial3: true,
+    lightTheme = ThemeData.light(useMaterial3: true).copyWith(
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         background: Colors.white,
@@ -29,7 +28,10 @@ class AppTheme {
           color: AppColors.white,
         ),
       ),
-      fontFamily: checkEnState(context) ? 'IranYekanX' : 'IranYekanXFaNum',
+      textTheme: Typography().black.apply(
+            fontFamily:
+                checkEnState(context) ? 'IranYekanX' : 'IranYekanXFaNum',
+          ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.white,
         toolbarTextStyle: TextStyle(
@@ -39,8 +41,7 @@ class AppTheme {
       ),
     );
 
-    darkTheme = ThemeData(
-      useMaterial3: true,
+    darkTheme = ThemeData.dark(useMaterial3: true).copyWith(
       colorScheme: ColorScheme.fromSeed(
         seedColor: lightPrimaryColor,
         brightness: Brightness.dark,
@@ -50,7 +51,10 @@ class AppTheme {
           color: AppColors.white,
         ),
       ),
-      fontFamily: checkEnState(context) ? 'IranYekanX' : 'IranYekanXFaNum',
+      textTheme: Typography().white.apply(
+            fontFamily:
+                checkEnState(context) ? 'IranYekanX' : 'IranYekanXFaNum',
+          ),
       appBarTheme: AppBarTheme(
         toolbarTextStyle: TextStyle(
           fontFamily: checkEnState(context) ? 'IranYekanX' : 'IranYekanXFaNum',

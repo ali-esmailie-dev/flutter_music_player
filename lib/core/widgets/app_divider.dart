@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppDivider extends StatelessWidget {
-
   const AppDivider({
     super.key,
     this.verticalDivider = false,
     this.width,
     this.height,
   });
+
   final bool verticalDivider;
 
   final double? width;

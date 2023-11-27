@@ -87,6 +87,9 @@ dependencies:
   # Package for managing files and directories
   file_manager: ^1.0.2
 
+  # Package for managing audio metadata
+  flutter_media_metadata: ^1.0.0
+
 dev_dependencies:
   slang_build_runner: *slang_version
   build_runner: ^2.4.6

@@ -6,6 +6,7 @@ import 'package:flutter_music_player/core/widgets/app_main_navigation.dart';
 import 'package:flutter_music_player/core/widgets/app_scaffold.dart';
 import 'package:flutter_music_player/core/widgets/general_appbar.dart';
 import 'package:flutter_music_player/features/home_feature/presentation/bloc/bottom_navigation_cubit.dart';
+import 'package:flutter_music_player/features/home_feature/presentation/screens/songs_screen.dart';
 import 'package:flutter_music_player/features/home_feature/presentation/widgets/home_body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final List<Widget> pages = [
-      Container(),
+      const SongsScreen(),
       Container(),
       Container(),
       const AppScaffold(

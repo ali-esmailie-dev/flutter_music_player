@@ -158,7 +158,7 @@ class _ComponentsScreenState extends State<ComponentsScreen>
               const AppVSpace(
                 space: Dimens.largePadding,
               ),
-              const Text('Loading bar'),
+              const AppText('Loading bar'),
               const AppVSpace(),
               const AppLoading(),
               const Text('Rating bar'),

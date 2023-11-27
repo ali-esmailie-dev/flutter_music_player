@@ -8,6 +8,7 @@ import 'package:flutter_music_player/features/home_feature/presentation/bloc/cou
 import 'package:flutter_music_player/features/home_feature/presentation/bloc/primary_color_cubit.dart';
 import 'package:flutter_music_player/features/home_feature/presentation/bloc/show_material_grids_cubit.dart';
 import 'package:flutter_music_player/features/home_feature/presentation/bloc/show_performance_overlay_cubit.dart';
+import 'package:flutter_music_player/features/home_feature/presentation/bloc/songs_cubit.dart';
 import 'package:flutter_music_player/features/home_feature/presentation/bloc/theme_cubit.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -47,6 +48,9 @@ void main() async {
         ),
         BlocProvider(
           create: (final BuildContext context) => BottomNavigationCubit(),
+        ),
+        BlocProvider(
+          create: (final BuildContext context) => SongsCubit(),
         ),
       ],
 

@@ -20,10 +20,9 @@ class AppText extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
     return Text(
       text ?? '',
-      style: style ?? textTheme.bodyMedium,
+      style: style ?? Theme.of(context).textTheme.bodyMedium,
       textAlign: textAlign ?? TextAlign.justify,
       maxLines: maxLines,
       overflow: textOverflow ?? TextOverflow.ellipsis,

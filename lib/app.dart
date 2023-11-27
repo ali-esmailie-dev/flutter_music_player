@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_music_player/core/localization/i18n/translations.g.dart';
 import 'package:flutter_music_player/core/routes/go_router_routes.dart';
 import 'package:flutter_music_player/core/theme/theme.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 /// Global key used for show snackBar without context
 final GlobalKey<ScaffoldMessengerState> globalScaffoldMessengerKey =

@@ -1,6 +1,13 @@
 part of 'songs_cubit.dart';
 
-@immutable
-abstract class SongsState {}
+class SongsState {
+  SongsState({required this.songs});
 
-class SongsInitial extends SongsState {}
+  final List<SongModel?> songs;
+
+  SongsState copyWith({
+    final List<SongModel?>? songs,
+  }) {
+    return SongsState(songs: songs ?? this.songs);
+  }
+}
