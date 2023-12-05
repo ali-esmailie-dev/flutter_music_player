@@ -31,5 +31,7 @@
   "next": "Next",
   "copied": "Copied successfully.",
   "textInputValidationErrorMessage": "The $field field information is not valid.",
-  "notFound": "Page Not Found"
+  "notFound": "Page Not Found",
+  "grantMediaPermission": "You must grant permission to access your device's media files in order to continue",
+  "allow": "allow"
 }

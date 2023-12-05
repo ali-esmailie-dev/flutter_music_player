@@ -15,6 +15,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
+import 'package:metadata_god/metadata_god.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,8 @@ void main() async {
 
   /// Get locale from device storage and set it
   LocaleSettings.setLocale(await LocaleHandler().getLocale());
+
+  MetadataGod.initialize();
 
   runApp(
     /// Provide all global blocs

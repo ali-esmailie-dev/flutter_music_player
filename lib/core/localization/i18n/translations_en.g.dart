@@ -55,6 +55,8 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	String get copied => 'Copied successfully.';
 	String textInputValidationErrorMessage({required Object field}) => 'The ${field} field information is not valid.';
 	String get notFound => 'Page Not Found';
+	String get grantMediaPermission => 'You must grant permission to access your device\'s media files in order to continue';
+	String get allow => 'allow';
 }
 
 // Path: login

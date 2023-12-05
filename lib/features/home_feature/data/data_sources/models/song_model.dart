@@ -13,11 +13,6 @@ class SongModel {
     this.discNumber,
     this.trackName,
     this.albumArtistName,
-    this.authorName,
-    this.writerName,
-    this.albumLength,
-    this.bitrate,
-    this.mimeType,
   });
 
   /// Name of the track.
@@ -35,36 +30,21 @@ class SongModel {
   /// Position of track in the album.
   final int? trackNumber;
 
-  /// Number of tracks in the album.
-  final int? albumLength;
-
   /// Year of the track.
   final int? year;
 
   /// Genre of the track.
   final String? genre;
 
-  /// Author of the track.
-  final String? authorName;
-
-  /// Writer of the track.
-  final String? writerName;
-
   /// Number of the disc.
   final int? discNumber;
 
-  /// Mime type.
-  final String? mimeType;
-
-  /// Duration of the track in milliseconds.
+  /// Duration of the track in seconds.
   final int? trackDuration;
-
-  /// Bitrate of the track.
-  final int? bitrate;
 
   /// [Uint8List] having album art data.
   final Uint8List? albumArt;
 
-  /// File path of the media file. `null` on web.
+  /// File path of the media file.
   final String? filePath;
 }

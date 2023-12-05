@@ -18,12 +18,4 @@ class AppPermissionHelper {
   ) {
     return permission.status;
   }
-
-  static Future<bool> openAppSettings() async {
-    return openAppSettings();
-  }
-
-  static Future<bool> openLocationSettings() async {
-    return openLocationSettings();
-  }
 }

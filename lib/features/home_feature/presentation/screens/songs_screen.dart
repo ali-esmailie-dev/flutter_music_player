@@ -17,34 +17,32 @@ class SongsScreen extends StatefulWidget {
 
 class _SongsState extends State<SongsScreen> {
   @override
-  void initState() {
-    context.read<SongsCubit>().getSongs();
-    super.initState();
-  }
-
-  @override
   Widget build(final BuildContext context) {
     final watch = context.watch<SongsCubit>();
-    return AppScaffold(
-      appBar: const GeneralAppBar(
-        title: 'Songs',
-      ),
-      smallBody: watch.state.songs.isEmpty
-          ? const AppLoading()
-          : AppListViewBuilder(
-              itemCount: watch.state.songs.length,
-              itemBuilder: (final context, final index) {
-                if (watch.state.songs[index] == null) {
-                  return const SizedBox.shrink();
-                }
-                return SongsCard(index: index);
-              },
-              separatorBuilder: (final context, final int index) {
-                return const AppDivider(
-                  height: 0,
-                );
-              },
-            ),
+    return BlocBuilder<SongsCubit, SongsState>(
+      builder: (final context, final state) {
+        return AppScaffold(
+          appBar: const GeneralAppBar(
+            title: 'Songs',
+          ),
+          smallBody: watch.state.songs.isEmpty
+              ? const AppLoading()
+              : AppListViewBuilder(
+                  itemCount: watch.state.songs.length,
+                  itemBuilder: (final context, final index) {
+                    if (watch.state.songs[index] == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return SongsCard(index: index);
+                  },
+                  separatorBuilder: (final context, final int index) {
+                    return const AppDivider(
+                      height: 0,
+                    );
+                  },
+                ),
+        );
+      },
     );
   }
 }

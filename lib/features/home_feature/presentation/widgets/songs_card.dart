@@ -26,9 +26,10 @@ class SongsCard extends StatelessWidget {
           albumArt: watch.state.songs[index]!.albumArt,
         ),
         title: AppText(
-          watch.state.songs[index]!.trackName ?? watch.getSongName(index),
+          watch.getSongName(index),
           maxLines: 1,
           textOverflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontFamily: 'IranYekanX', fontSize: 14.0),
         ),
         subtitle: watch.state.songs[index]?.trackArtistNames == null
             ? null
@@ -37,9 +38,13 @@ class SongsCard extends StatelessWidget {
                   top: Dimens.padding,
                 ),
                 child: AppText(
-                  watch.getSongArtistName(index),
+                  '${watch.getSongArtistName(index)}${watch.getSongsDuration(index)}',
                   maxLines: 1,
                   textOverflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    fontFamily: 'IranYekanX',
+                  ),
                 ),
               ),
         trailing: AppIconButton(

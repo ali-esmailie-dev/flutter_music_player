@@ -90,6 +90,12 @@ dependencies:
   # Package for managing audio metadata
   flutter_media_metadata: ^1.0.0
 
+  flutter_sound: ^9.2.13
+
+  metadata_god: ^0.5.2+1
+
+  audiotags: ^1.3.0
+
 dev_dependencies:
   slang_build_runner: *slang_version
   build_runner: ^2.4.6

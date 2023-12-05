@@ -37,6 +37,8 @@ extension on _TranslationsEn {
 			case 'copied': return 'Copied successfully.';
 			case 'textInputValidationErrorMessage': return ({required Object field}) => 'The ${field} field information is not valid.';
 			case 'notFound': return 'Page Not Found';
+			case 'grantMediaPermission': return 'You must grant permission to access your device\'s media files in order to continue';
+			case 'allow': return 'allow';
 			default: return null;
 		}
 	}
@@ -76,6 +78,8 @@ extension on _TranslationsFa {
 			case 'copied': return 'با موفقیت کپی شد.';
 			case 'textInputValidationErrorMessage': return ({required Object field}) => 'اطلاعات فیلد ${field} معتبر نمی‌باشد.';
 			case 'notFound': return 'صفحه مورد نظر یافت نشد.';
+			case 'grantMediaPermission': return 'برای ادامه، باید اجازه دسترسی به فایل های رسانه ای دستگاه خود را بدهید';
+			case 'allow': return 'اجازه دادن';
 			default: return null;
 		}
 	}

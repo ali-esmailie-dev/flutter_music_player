@@ -9,7 +9,7 @@ import 'package:flutter_music_player/features/home_feature/presentation/screens/
 import 'package:go_router/go_router.dart';
 
 final GoRouter routes = GoRouter(
-  initialLocation: GoRoutesPath.home,
+  initialLocation: GoRoutesPath.splash,
   errorBuilder: (final BuildContext context, final GoRouterState state) {
     return const NotFoundScreen();
   },

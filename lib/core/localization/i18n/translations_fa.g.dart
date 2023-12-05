@@ -55,6 +55,8 @@ class _TranslationsFa implements _TranslationsEn {
 	@override String get copied => 'با موفقیت کپی شد.';
 	@override String textInputValidationErrorMessage({required Object field}) => 'اطلاعات فیلد ${field} معتبر نمی‌باشد.';
 	@override String get notFound => 'صفحه مورد نظر یافت نشد.';
+	@override String get grantMediaPermission => 'برای ادامه، باید اجازه دسترسی به فایل های رسانه ای دستگاه خود را بدهید';
+	@override String get allow => 'اجازه دادن';
 }
 
 // Path: login

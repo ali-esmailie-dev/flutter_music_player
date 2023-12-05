@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:audiotags/audiotags.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:flutter_music_player/core/localization/i18n/translations.g.dart';
 import 'package:flutter_music_player/core/utils/app_permissions_helper.dart';
+import 'package:flutter_music_player/core/utils/app_snack_bar.dart';
 import 'package:flutter_music_player/features/home_feature/data/data_sources/models/song_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -11,40 +15,43 @@ part 'songs_state.dart';
 class SongsCubit extends Cubit<SongsState> {
   SongsCubit() : super(SongsState(songs: []));
 
-  final List<SongModel?> songsEntity = [];
+  static List<SongModel?> songsEntity = [];
 
-  void getSongs() {
-    AppPermissionHelper.checkPermissionStatus(Permission.storage)
-        .then((final bool hasPermission) async {
-      if (hasPermission) {
-        final Directory directory = Directory('/storage/emulated/0/');
-
-        final List<FileSystemEntity> entities = directory.listSync().toList();
-
-        findSongs(entities);
-        emit(state.copyWith(songs: songsEntity));
-
-        // final stat = FileStat.statSync(songs.first.path);
-        // print('Accessed: ${stat.accessed}');
-        // print('Modified: ${stat.modified}');
-        // print('Changed: ${stat.changed}');
-        // print('size:  ${stat.size}');
-      } else {
-        AppPermissionHelper.requestPermission(Permission.storage).then((
-          final value,
-        ) {
-          getSongs();
-        });
-      }
-    });
+  Future<bool> checkMediaPermission() {
+    return AppPermissionHelper.checkPermissionStatus(Permission.storage);
   }
 
-  void findSongs(
+  Future<bool> requestPermission() async {
+    if (await Permission.storage.isPermanentlyDenied) {
+      await openAppSettings();
+      return false;
+    }
+    return AppPermissionHelper.requestPermission(Permission.storage);
+  }
+
+  Future<void> getSongs() async {
+    try {
+      emit(state.copyWith(loading: true));
+
+      final Directory directory = Directory('/storage/emulated/0/');
+      final List<FileSystemEntity> entities = directory.listSync().toList();
+
+      songsEntity = await compute(findSongs, entities);
+
+      print(songsEntity.length);
+
+      emit(state.copyWith(songs: songsEntity));
+    } catch (e) {
+      showSnackBar(t.throwException);
+    }
+  }
+
+  static Future<List<SongModel?>> findSongs(
     final List<FileSystemEntity> entities,
-  ) {
+  ) async {
     for (final FileSystemEntity directoryEntity in entities) {
       if (!checkDirectoryType(directoryEntity)) {
-        checkAndAddSong(directoryEntity);
+        await checkAndAddSong(directoryEntity);
       } else {
         if (checkDirectoryType(directoryEntity)) {
           if (!checkAndroidDirectory(directoryEntity)) {
@@ -53,7 +60,7 @@ class SongsCubit extends Cubit<SongsState> {
                 directory.listSync(recursive: true).toList();
             for (final FileSystemEntity directoryEntity in entities) {
               if (!checkDirectoryType(directoryEntity)) {
-                checkAndAddSong(directoryEntity);
+                await checkAndAddSong(directoryEntity);
               } else {
                 continue;
               }
@@ -62,42 +69,42 @@ class SongsCubit extends Cubit<SongsState> {
         }
       }
     }
+    return songsEntity;
   }
 
-  bool checkDirectoryType(final FileSystemEntity directoryEntity) {
+  static bool checkDirectoryType(final FileSystemEntity directoryEntity) {
     return directoryEntity is Directory;
   }
 
-  bool checkAndroidDirectory(final FileSystemEntity directoryEntity) {
+  static bool checkAndroidDirectory(final FileSystemEntity directoryEntity) {
     return directoryEntity.toString().toLowerCase().contains('android');
   }
 
-  Future<void> checkAndAddSong(final FileSystemEntity directoryEntity) async {
+  static Future<void> checkAndAddSong(
+    final FileSystemEntity directoryEntity,
+  ) async {
     if (directoryEntity.path.toLowerCase().contains('.mp3')) {
-      final Metadata? metaData = await getSongMetadata(directoryEntity);
+      try {
+        final Tag? metaData = await AudioTags.read(directoryEntity.path);
 
-      if (metaData == null) {
-        songsEntity.add(null);
-      } else {
-        songsEntity.add(
-          SongModel(
-            trackArtistNames: metaData.trackArtistNames,
-            albumArtistName: metaData.albumName,
-            filePath: metaData.filePath,
-            trackDuration: metaData.trackDuration,
-            albumArt: metaData.albumArt,
-            genre: metaData.genre,
-            year: metaData.year,
-            trackNumber: metaData.trackNumber,
-            discNumber: metaData.discNumber,
-            trackName: metaData.trackName,
-            authorName: metaData.authorName,
-            writerName: metaData.writerName,
-            albumLength: metaData.albumLength,
-            bitrate: metaData.bitrate,
-            mimeType: metaData.mimeType,
-          ),
-        );
+        if (metaData != null) {
+          songsEntity.add(
+            SongModel(
+              trackArtistNames: [metaData.trackArtist ?? ''],
+              filePath: directoryEntity.path,
+              trackDuration: metaData.duration,
+              albumArt: metaData.pictures.first.bytes,
+              genre: metaData.genre,
+              year: metaData.year,
+              trackNumber: metaData.trackNumber,
+              discNumber: metaData.discNumber,
+              albumArtistName: metaData.albumArtist,
+              trackName: metaData.title,
+            ),
+          );
+        }
+      } catch (e) {
+        return;
       }
     }
   }
@@ -117,10 +124,15 @@ class SongsCubit extends Cubit<SongsState> {
 
   String getSongName(final int index) {
     try {
-      return state.songs[index]!.filePath!.split('/').last.replaceAll(
-        '.mp3',
-        '',
-      );
+      if (state.songs[index]!.trackName == null ||
+          state.songs[index]!.trackName == '') {
+        return state.songs[index]!.filePath!.split('/').last.replaceAll(
+              '.mp3',
+              '',
+            );
+      } else {
+        return state.songs[index]!.trackName!;
+      }
     } catch (e) {
       return '';
     }
@@ -128,9 +140,47 @@ class SongsCubit extends Cubit<SongsState> {
 
   String getSongArtistName(final int index) {
     try {
-      return state.songs[index]?.trackArtistNames!.first ?? '';
+      if (state.songs[index]?.trackArtistNames!.first == null) {
+        return '';
+      }
+      if (state.songs[index]?.trackArtistNames!.first == '') {
+        return '';
+      }
+      return '${state.songs[index]?.trackArtistNames!.first} - ';
     } catch (e) {
       return '';
     }
+  }
+
+  String getSongsDuration(final int index) {
+    try {
+      final Duration duration = Duration(
+        seconds: state.songs[index]!.trackDuration!,
+      );
+
+      final int minutes = duration.inMinutes.remainder(60);
+      final int seconds = duration.inSeconds.remainder(60);
+
+      return '${minutes < 10 ? '0' : ''}$minutes:${seconds < 10 ? '0' : ''}$seconds';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  void getSongStats(final int index) {
+    if (state.songs[index] == null) {
+      return;
+    }
+
+    if (state.songs[index]!.filePath == null) {
+      return;
+    }
+
+    final stat = FileStat.statSync(state.songs[index]!.filePath!);
+
+    print('Accessed: ${stat.accessed}');
+    print('Modified: ${stat.modified}');
+    print('Changed: ${stat.changed}');
+    print('size:  ${stat.size}');
   }
 }
